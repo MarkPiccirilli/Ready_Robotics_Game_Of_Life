@@ -12,6 +12,7 @@ class Cell {
 
 private:
 	bool state; //0 will be unpopulate and 1 will be populated 
+	int surround;
 
 public:
 
@@ -27,6 +28,10 @@ public:
 
 	//getter
 	bool get_state();
+
+	int get_surround();
+
+	void set_surround(int );
 };
 
 #endif

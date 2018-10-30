@@ -11,11 +11,13 @@
 //default constructor
 Cell::Cell() {
 	set_state(0);
+	set_surround(0);
 }
 
 //overload constructor
 Cell::Cell(bool pop) {
 	set_state(pop);
+	set_surround(0);
 }
 
 //set cell
@@ -27,3 +29,12 @@ void Cell::set_state(bool pop) {
 bool Cell::get_state() {
 	return state;
 }
+
+//get surrounding
+int Cell::get_surround() {
+	return surround;
+}
+
+void Cell::set_surround(int surround_in) {
+	surround = surround_in;
+}	
