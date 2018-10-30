@@ -21,7 +21,9 @@ using std::endl;
 using std::string;
 using std::ifstream;
 
+
 int main(int argc, char* argv[]) {
+
 
 	ifstream file_in;
 
@@ -33,8 +35,9 @@ int main(int argc, char* argv[]) {
 	string line;
 
 	for(int i=0; i<16; i++) {
+		file_in >> line;
 		if(!file_in.eof()) { //if there is a line
-			file_in >> line;
+			//cout << "test:" << i << endl; //testing code
 			if(line.length() < 16) { //if the lines are shorter than 16 make remaining cells unpopulated
 				for(int x=line.length(); x<16; x++) { 
 					line = line + '.';
@@ -59,10 +62,70 @@ int main(int argc, char* argv[]) {
 			}
 		}
 	} //end outside for loop
-
+	
 	//close file
 	file_in.close();
 
+	//int iterations=0; //testing code
+
+	//play game
+	//for(int turn=0; turn<100; turn++) {
+		for(int i=0; i<16; i++) {
+			for(int j=0; j<16; j++) {
+				//create array to hold the surrounding cell state values
+				int surrounding_cells[8];
+
+				//fill array
+				if(i>0 && j>0)
+					surrounding_cells[0] = grid[i-1][j-1].get_state();
+				else
+					surrounding_cells[0] = 0;
+				if(i>0) 
+					surrounding_cells[1] = grid[i-1][j].get_state();
+				else
+					surrounding_cells[1] = 0;
+				if(i>0 && j<15)
+					surrounding_cells[2] = grid[i-1][j+1].get_state();
+				else
+					surrounding_cells[2] = 0;
+				if(j<15) 
+					surrounding_cells[3] = grid[i][j+1].get_state();
+				else
+					surrounding_cells[3] = 0;
+				if(i<15 && j<15)
+					surrounding_cells[4] = grid[i+1][j+1].get_state();
+				else
+					surrounding_cells[4] = 0;
+				if(i<15)
+					surrounding_cells[5] = grid[i+1][j].get_state();
+				else
+					surrounding_cells[5] = 0;
+				if(i<15 && j>0) 
+					surrounding_cells[6] = grid[i+1][j-1].get_state();
+				else
+					surrounding_cells[6] = 0;
+				if(j>0) 
+					surrounding_cells[7] = grid[i][j-1].get_state();
+				else
+					surrounding_cells[7] = 0;
+
+				//find the number of live cells in the surrounding array
+				int live_cell_total = 0;
+				for(int k=0; k<7; k++) {
+					live_cell_total = live_cell_total + surrounding_cells[k];
+					//cout << "sck:" << surrounding_cells[k];
+				}
+
+				grid[i][j].set_surround(live_cell_total);
+
+				//cout << live_cell_total;//testing code
+
+				//cout << "interations: " << iterations << endl; //testing code
+				//iterations++; //testing code
+			} // end second inside for loop
+		}//end first inside for loop
+	//}//end ouside for loop
+	
 
 	//testing code
 	for(int i=0; i<16; i++) {
@@ -72,5 +135,19 @@ int main(int argc, char* argv[]) {
 		cout << endl;
 	}
 
+	cout << endl;
+
+	//testing code
+	for(int i=0; i<16; i++) {
+		for(int j=0; j<16; j++) {
+			cout << grid[i][j].get_surround();
+		}
+		cout << endl;
+	}
+
 	return 0;
 }
+
+
+
+
