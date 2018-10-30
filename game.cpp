@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
 	//int iterations=0; //testing code
 
 	//play game
-	//for(int turn=0; turn<100; turn++) {
+	for(int turn=0; turn<100; turn++) {
 		for(int i=0; i<16; i++) {
 			for(int j=0; j<16; j++) {
 				//create array to hold the surrounding cell state values
@@ -78,40 +78,56 @@ int main(int argc, char* argv[]) {
 				//fill array
 				if(i>0 && j>0)
 					surrounding_cells[0] = grid[i-1][j-1].get_state();
-				else
+				else {
 					surrounding_cells[0] = 0;
+				//	cout << "a";
+				}
 				if(i>0) 
 					surrounding_cells[1] = grid[i-1][j].get_state();
-				else
+				else {
 					surrounding_cells[1] = 0;
+				//	cout << "b";
+				}
 				if(i>0 && j<15)
 					surrounding_cells[2] = grid[i-1][j+1].get_state();
-				else
+				else {
 					surrounding_cells[2] = 0;
+				//	cout << "c";
+				}
 				if(j<15) 
 					surrounding_cells[3] = grid[i][j+1].get_state();
-				else
+				else {
 					surrounding_cells[3] = 0;
+				//	cout << "d";
+				}
 				if(i<15 && j<15)
 					surrounding_cells[4] = grid[i+1][j+1].get_state();
-				else
+				else {
 					surrounding_cells[4] = 0;
+				//	cout << "e";
+				}
 				if(i<15)
 					surrounding_cells[5] = grid[i+1][j].get_state();
-				else
+				else{
 					surrounding_cells[5] = 0;
+				//	cout << "f";
+				}
 				if(i<15 && j>0) 
 					surrounding_cells[6] = grid[i+1][j-1].get_state();
-				else
+				else {
 					surrounding_cells[6] = 0;
+				//	cout << "g";
+				}
 				if(j>0) 
 					surrounding_cells[7] = grid[i][j-1].get_state();
-				else
+				else {
 					surrounding_cells[7] = 0;
+				//	cout << "h";
+				}
 
 				//find the number of live cells in the surrounding array
 				int live_cell_total = 0;
-				for(int k=0; k<7; k++) {
+				for(int k=0; k<8; k++) {
 					live_cell_total = live_cell_total + surrounding_cells[k];
 					//cout << "sck:" << surrounding_cells[k];
 				}
@@ -124,26 +140,43 @@ int main(int argc, char* argv[]) {
 				//iterations++; //testing code
 			} // end second inside for loop
 		}//end first inside for loop
-	//}//end ouside for loop
+
+		//testing code
+		for(int i=0; i<16; i++) {
+			for(int j=0; j<16; j++) {
+				cout << grid[i][j].get_state();
+			}
+			cout << endl;
+		}
+		cout << endl;
+		//end testing code
+		//testing code
+		for(int i=0; i<16; i++) {
+			for(int j=0; j<16; j++) {
+				cout << grid[i][j].get_surround();
+			}
+			cout << endl;
+		}
+		cout << endl;
+		//end testing code
+
+		//reset the state based on the number of surrounding cells
+		for(int i=0; i<16; i++) {
+			for(int j=0; j<16; j++) {
+				if(grid[i][j].get_state() == 1 && grid[i][j].get_surround() < 2) {
+					grid[i][j].set_state(0);
+				}
+				else if(grid[i][j].get_state() == 1 && grid[i][j].get_surround() > 3) {
+					grid[i][j].set_state(0);
+				}
+				else if(grid[i][j].get_state() == 0 && grid[i][j].get_surround() == 3) {
+					grid[i][j].set_state(1);
+				}	
+			} //end inside for loop
+		}//end outside for loop
+	}//end ouside for loop
 	
 
-	//testing code
-	for(int i=0; i<16; i++) {
-		for(int j=0; j<16; j++) {
-			cout << grid[i][j].get_state();
-		}
-		cout << endl;
-	}
-
-	cout << endl;
-
-	//testing code
-	for(int i=0; i<16; i++) {
-		for(int j=0; j<16; j++) {
-			cout << grid[i][j].get_surround();
-		}
-		cout << endl;
-	}
 
 	return 0;
 }
