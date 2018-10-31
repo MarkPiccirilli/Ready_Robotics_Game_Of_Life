@@ -14,6 +14,7 @@
 #include <string>
 
 #include "Cell.hpp"
+#include "Queue.hpp" //this is a queue to hold the 2d arrays
 
 using std::cin;
 using std::cout;
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
 
 	string data;
 
-	Cell grid[16][16]; //create an array of objects for the grid
+	Cell** grid; //create an array of objects for the grid
 	string line;
 
 	for(int i=0; i<16; i++) {
@@ -67,6 +68,8 @@ int main(int argc, char* argv[]) {
 	file_in.close();
 
 	//int iterations=0; //testing code
+	
+	Queue array_q; //queue to hold grids
 
 	//play game
 	for(int turn=0; turn<100; turn++) {
@@ -141,24 +144,8 @@ int main(int argc, char* argv[]) {
 			} // end second inside for loop
 		}//end first inside for loop
 
-		//testing code
-		for(int i=0; i<16; i++) {
-			for(int j=0; j<16; j++) {
-				cout << grid[i][j].get_state();
-			}
-			cout << endl;
-		}
-		cout << endl;
-		//end testing code
-		//testing code
-		for(int i=0; i<16; i++) {
-			for(int j=0; j<16; j++) {
-				cout << grid[i][j].get_surround();
-			}
-			cout << endl;
-		}
-		cout << endl;
-		//end testing code
+
+		array_q.addBack(grid);
 
 		//reset the state based on the number of surrounding cells
 		for(int i=0; i<16; i++) {
@@ -177,6 +164,33 @@ int main(int argc, char* argv[]) {
 	}//end ouside for loop
 	
 
+	for(int m=0; m<100; m++) {
+		Cell** link_grid = array_q.getFront();
+		//testing code
+		for(int i=0; i<16; i++) {
+			for(int j=0; j<16; j++) {
+				cout << link_grid[i][j].get_state();
+			}
+			cout << endl;
+		}
+		
+		cout << endl;
+		/*
+		//end testing code
+		//testing code
+		
+		for(int i=0; i<16; i++) {
+			for(int j=0; j<16; j++) {
+				cout << link_grid[i][j].get_surround();
+			}
+			cout << endl;
+		}
+		cout << endl;
+		//end testing code
+		*/
+
+		array_q.removeFront();
+	}
 
 	return 0;
 }
